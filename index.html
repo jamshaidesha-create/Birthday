@@ -141,9 +141,9 @@
         }
 
         const PHOTOS = [
-            { type: 'image', url: './picture.jpeg', caption: 'happy birthday !!', subtext: 'thank you for showing up - for everything, every time.' },
-            { type: 'video', url: './video.mp4', caption: 'my favourite person', subtext: 'ordinary days with you have always been my favourite ones.' },
-            { type: 'image', url: './image.jpg', caption: 'to many more', subtext: 'can\'t wait to make more memories with you.' },
+            { type: 'image', url: 'https://images.unsplash.com/photo-1518199266791-5375a83190b7?auto=format&fit=crop&w=800&q=80', caption: 'happy birthday !!', subtext: 'thank you for showing up - for everything, every time.' },
+            { type: 'video', url: 'https://cdn.pixabay.com/video/2015/09/22/751-139366164_tiny.mp4', caption: 'my favourite person', subtext: 'ordinary days with you have always been my favourite ones.' },
+            { type: 'image', url: 'https://images.unsplash.com/photo-1602691863587-84bc78cb35c1?auto=format&fit=crop&w=800&q=80', caption: 'to many more', subtext: 'can\'t wait to make more memories with you.' },
         ];
 
         function AlbumSection() {
@@ -185,9 +185,9 @@
                         >
                         <div className="flex-1 bg-[#F5EBE4]/30 overflow-hidden relative mb-4">
                             {errorUrls.has(PHOTOS[currentIndex].url) ? (
-                                <div className="w-full h-full flex flex-col items-center justify-center text-[#C8A98E] text-xs px-4 text-center border border-dashed border-[#C8A98E]/30">
+                                <div className="w-full h-full flex flex-col items-center justify-center text-[#C8A98E] text-xs px-4 text-center border border-dashed border-[#C8A98E]/30 break-all overflow-hidden p-2">
                                     <p>{PHOTOS[currentIndex].type === 'video' ? 'Video' : 'Picture'} not found</p>
-                                    <p className="mt-2 text-[10px]">Please upload {PHOTOS[currentIndex].url.replace('./', '')}</p>
+                                    <p className="mt-2 text-[10px]">Media failed to load</p>
                                 </div>
                             ) : PHOTOS[currentIndex].type === 'video' ? (
                                 <video 
@@ -394,11 +394,6 @@
                 </div>
                 <BouquetSection />
                 <LetterSection />
-                
-                {/* Background Romantic Music */}
-                <audio autoPlay loop muted={false}>
-                    <source src="https://cdn.pixabay.com/audio/2022/05/27/audio_1808fbf07a.mp3" type="audio/mpeg" />
-                </audio>
                 </motion.div>
             );
         }
