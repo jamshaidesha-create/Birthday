@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday My Love</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Quicksand', 'sans-serif'],
+              serif: ['Playfair Display', 'serif'],
+            }
+          }
+        }
+      }
+    </script>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- React & ReactDOM -->
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+    
+    <!-- Babel -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <!-- Framer Motion -->
+    <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js"></script>
+
+    <style>
+        body {
+            background-color: #FDF8F5;
+            color: #5A5245;
+            -webkit-tap-highlight-color: transparent;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect, useRef } = React;
+        const { motion, AnimatePresence } = window.Motion;
+
+        // Icons
+        const Heart = ({ className, fill = "none" }) => (
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill={fill} stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+        );
+        const Play = ({ className }) => (
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><polygon points="6 3 20 12 6 21 6 3"/></svg>
+        );
+        const Pause = ({ className }) => (
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><rect width="4" height="16" x="6" y="4"/><rect width="4" height="16" x="14" y="4"/></svg>
+        );
+        const Music = ({ className }) => (
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+        );
+        const ChevronLeft = ({ className }) => (
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="m15 18-6-6 6-6"/></svg>
+        );
+        const ChevronRight = ({ className }) => (
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="m9 18 6-6-6-6"/></svg>
+        );
+        const ArrowRight = ({ className }) => (
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        );
+        const X = ({ className }) => (
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+        );
+
+        function EnvelopeScreen({ onOpen }) {
+            return (
+                <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0, scale: 1.1, filter: "blur(10px)" }}
+                transition={{ duration: 0.8 }}
+                className="flex flex-col items-center justify-center min-h-screen w-full cursor-pointer relative"
+                onClick={onOpen}
+                >
+                <div className="text-center mb-16 relative z-10">
+                    <h2 className="text-xl md:text-2xl font-serif text-[#5A5245] mb-4 tracking-wider lowercase">
+                    a little something for you
+                    </h2>
+                    <p className="text-2xl md:text-3xl text-[#C8A98E] italic font-serif">
+                    happy birthday ♡
+                    </p>
+                </div>
+
+                <motion.div
+                    animate={{ y: [0, -10, 0] }}
+                    transition={{ repeat: Infinity, duration: 3, ease: "easeInOut" }}
+                    className="relative z-10"
+                >
+                    <div className="w-64 h-44 bg-[#F5EBE4] rounded-lg shadow-md relative flex items-center justify-center border border-[#EAE0D8] hover:scale-105 transition-transform duration-300">
+                    <div className="absolute top-0 left-0 w-full h-full rounded-lg overflow-hidden">
+                        <svg viewBox="0 0 100 100" preserveAspectRatio="none" className="w-full h-full text-[#EFE3DA]">
+                        <polygon points="0,0 100,0 50,50" fill="currentColor" stroke="#EAE0D8" strokeWidth="1" />
+                        <polygon points="0,0 50,50 0,100" fill="#F5EBE4" stroke="#EAE0D8" strokeWidth="1" />
+                        <polygon points="100,0 50,50 100,100" fill="#F5EBE4" stroke="#EAE0D8" strokeWidth="1" />
+                        <polygon points="0,100 50,50 100,100" fill="#F0E5DC" stroke="#EAE0D8" strokeWidth="1" />
+                        </svg>
+                    </div>
+                    <div className="absolute w-14 h-14 bg-[#E8B4B8] rounded-full flex items-center justify-center shadow-sm z-10">
+                        <Heart className="w-7 h-7 text-white fill-current" />
+                    </div>
+                    </div>
+                </motion.div>
+                </motion.div>
+            );
+        }
+
+        function HeroSection({ onSeeAlbum }) {
+            return (
+                <div className="flex flex-col items-center text-center space-y-8">
+                <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#F5EBE4] text-[10px] tracking-widest text-[#8C8476] uppercase">
+                    <Heart className="w-3 h-3 text-[#E8B4B8] fill-current" />
+                    <span>Only for you</span>
+                </div>
+
+                <div>
+                    <h1 className="text-4xl md:text-5xl font-serif text-[#4A443B] mb-3">Happy Birthday</h1>
+                    <h2 className="text-3xl md:text-4xl font-serif text-[#C8A98E] italic">My Love ♡</h2>
+                </div>
+
+                <p className="text-[#8C8476] leading-relaxed max-w-md mx-auto text-sm md:text-base">
+                    Today is yours. A whole little garden of wishes — for every laugh we've shared, every silly moment, and every reason you make the world brighter. Pause for a beat, and let me celebrate you properly.
+                </p>
+
+                <button onClick={onSeeAlbum} className="text-[11px] font-bold tracking-widest text-[#8C8476] uppercase hover:text-[#C8A98E] transition-colors flex items-center gap-2 mt-8 py-4">
+                    See our album <ArrowRight className="w-4 h-4" />
+                </button>
+                </div>
+            );
+        }
+
+        const PHOTOS = [
+            { type: 'image', url: './picture.jpeg', caption: 'happy birthday !!', subtext: 'thank you for showing up - for everything, every time.' },
+            { type: 'video', url: './video.mp4', caption: 'my favourite person', subtext: 'ordinary days with you have always been my favourite ones.' },
+            { type: 'image', url: './image.jpg', caption: 'to many more', subtext: 'can\'t wait to make more memories with you.' },
+        ];
+
+        function AlbumSection() {
+            const [currentIndex, setCurrentIndex] = useState(0);
+            const [errorUrls, setErrorUrls] = useState(new Set());
+
+            const next = () => setCurrentIndex((i) => (i + 1) % PHOTOS.length);
+            const prev = () => setCurrentIndex((i) => (i - 1 + PHOTOS.length) % PHOTOS.length);
+
+            const handleError = (url) => {
+                setErrorUrls(prev => {
+                    const newSet = new Set(prev);
+                    newSet.add(url);
+                    return newSet;
+                });
+            };
+
+            return (
+                <div className="flex flex-col items-center text-center space-y-10">
+                <div>
+                    <h3 className="text-2xl font-serif text-[#4A443B] mb-3">our little album</h3>
+                    <p className="text-sm text-[#8C8476]">a few of my favourite moments with you ♡</p>
+                </div>
+
+                <div className="flex items-center gap-2 md:gap-6 w-full justify-center">
+                    <button onClick={prev} className="p-2 text-[#C8A98E] hover:text-[#4A443B] transition-colors bg-white/50 rounded-full shrink-0">
+                    <ChevronLeft className="w-6 h-6" />
+                    </button>
+                    
+                    <div className="relative w-64 md:w-72 h-[380px] md:h-[420px]">
+                    <AnimatePresence mode="wait">
+                        <motion.div
+                        key={currentIndex}
+                        initial={{ opacity: 0, x: 20, rotate: 2 }}
+                        animate={{ opacity: 1, x: 0, rotate: -1 }}
+                        exit={{ opacity: 0, x: -20, rotate: -4 }}
+                        transition={{ duration: 0.4 }}
+                        className="absolute inset-0 bg-white p-4 md:p-5 pb-16 md:pb-20 rounded-sm shadow-[0_15px_35px_-10px_rgba(0,0,0,0.08)] border border-[#E8D5C4]/50 flex flex-col"
+                        >
+                        <div className="flex-1 bg-[#F5EBE4]/30 overflow-hidden relative mb-4">
+                            {errorUrls.has(PHOTOS[currentIndex].url) ? (
+                                <div className="w-full h-full flex flex-col items-center justify-center text-[#C8A98E] text-xs px-4 text-center border border-dashed border-[#C8A98E]/30">
+                                    <p>{PHOTOS[currentIndex].type === 'video' ? 'Video' : 'Picture'} not found</p>
+                                    <p className="mt-2 text-[10px]">Please upload {PHOTOS[currentIndex].url.replace('./', '')}</p>
+                                </div>
+                            ) : PHOTOS[currentIndex].type === 'video' ? (
+                                <video 
+                                    src={PHOTOS[currentIndex].url} 
+                                    className="w-full h-full object-cover"
+                                    controls
+                                    autoPlay
+                                    loop
+                                    muted
+                                    playsInline
+                                    onError={() => handleError(PHOTOS[currentIndex].url)} 
+                                />
+                            ) : (
+                                <img 
+                                    src={PHOTOS[currentIndex].url} 
+                                    alt="Us" 
+                                    className="w-full h-full object-cover"
+                                    onError={() => handleError(PHOTOS[currentIndex].url)} 
+                                />
+                            )}
+                        </div>
+                        <div className="absolute bottom-6 left-0 w-full text-center px-4">
+                            <p className="font-sans font-medium text-lg text-[#4A443B] mb-1">{PHOTOS[currentIndex].caption}</p>
+                            <p className="text-[9px] uppercase tracking-widest text-[#8C8476] leading-relaxed px-2">{PHOTOS[currentIndex].subtext}</p>
+                        </div>
+                        </motion.div>
+                    </AnimatePresence>
+                    </div>
+
+                    <button onClick={next} className="p-2 text-[#C8A98E] hover:text-[#4A443B] transition-colors bg-white/50 rounded-full shrink-0">
+                    <ChevronRight className="w-6 h-6" />
+                    </button>
+                </div>
+                
+                <div className="text-[10px] tracking-[0.2em] text-[#C8A98E] uppercase">
+                    Memory {currentIndex + 1} / {PHOTOS.length}
+                </div>
+                </div>
+            );
+        }
+
+        const FLOWERS = [
+            { icon: '🌸', title: 'THE WAY YOU LAUGH', text: 'One of my favorite things about you is the way you laugh. It’s the kind of laugh that makes everything feel lighter and somehow turns ordinary moments into special ones. I hope you never lose that smile and that beautiful way of finding happiness in little things, because it suits you so well and makes the people around you feel happy too ❤️' },
+            { icon: '🌻', title: 'THE WAY YOU SHOW UP', text: 'You make me happy without even trying — just showing up, being yourself, and being there. It’s funny how someone can make an ordinary day feel special without doing anything at all. Thank you for being you ❤️' },
+            { icon: '🌼', title: 'YOUR KIND HEART', text: 'Your kind heart is one of the things I admire the most about you. The way you care, the way you understand, and the way you make things feel okay without even realizing it means so much to me.' },
+        ];
+
+        function BouquetSection() {
+            const [openIndex, setOpenIndex] = useState(null);
+
+            return (
+                <div className="flex flex-col items-center text-center space-y-12">
+                <div>
+                    <h3 className="text-2xl font-serif text-[#4A443B] mb-3">a tiny bouquet of birthday wishes</h3>
+                    <p className="text-sm text-[#8C8476]">pick each flower — there's a little wish inside ♡</p>
+                </div>
+
+                <div className="flex gap-4 md:gap-6 justify-center w-full max-w-md mx-auto">
+                    {FLOWERS.map((flower, idx) => (
+                    <button 
+                        key={idx}
+                        onClick={() => setOpenIndex(idx)}
+                        className="flex-1 bg-white rounded-t-full rounded-b-2xl shadow-sm border border-[#E8D5C4]/50 flex flex-col items-center justify-center py-8 gap-4 hover:-translate-y-2 hover:shadow-md transition-all duration-300"
+                    >
+                        <span className="text-3xl md:text-4xl drop-shadow-sm">{flower.icon}</span>
+                        <span className="text-[9px] uppercase tracking-widest text-[#8C8476] font-medium">Pick Me</span>
+                    </button>
+                    ))}
+                </div>
+
+                <AnimatePresence>
+                    {openIndex !== null && (
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#FDF8F5]/90 backdrop-blur-sm"
+                        onClick={() => setOpenIndex(null)}
+                    >
+                        <motion.div 
+                        initial={{ scale: 0.9, y: 20 }}
+                        animate={{ scale: 1, y: 0 }}
+                        exit={{ scale: 0.9, y: 20 }}
+                        className="bg-white p-8 md:p-10 rounded-3xl shadow-[0_20px_60px_-15px_rgba(0,0,0,0.1)] max-w-sm w-full relative border border-[#E8D5C4]/50"
+                        onClick={e => e.stopPropagation()}
+                        >
+                        <button onClick={() => setOpenIndex(null)} className="absolute top-5 right-5 text-[#8C8476] hover:text-[#4A443B] transition-colors p-2 bg-[#FDF8F5] rounded-full">
+                            <X className="w-4 h-4" />
+                        </button>
+                        <div className="text-center mb-6 text-5xl drop-shadow-sm">{FLOWERS[openIndex].icon}</div>
+                        <div className="flex items-center justify-center gap-2 mb-5">
+                            <Heart className="w-3 h-3 text-[#E8B4B8] fill-current" />
+                            <h4 className="text-[10px] uppercase tracking-[0.2em] text-[#C8A98E] text-center font-bold">{FLOWERS[openIndex].title}</h4>
+                            <Heart className="w-3 h-3 text-[#E8B4B8] fill-current" />
+                        </div>
+                        <p className="text-[#5A5245] text-center leading-relaxed font-serif italic text-lg px-2">"{FLOWERS[openIndex].text}"</p>
+                        </motion.div>
+                    </motion.div>
+                    )}
+                </AnimatePresence>
+                </div>
+            );
+        }
+
+        function LetterSection() {
+            const [isOpen, setIsOpen] = useState(false);
+
+            return (
+                <div className="flex flex-col items-center text-center space-y-8 pb-24">
+                <div className="bg-white/70 backdrop-blur-sm p-8 md:p-10 rounded-3xl shadow-sm border border-[#E8D5C4]/50 max-w-md w-full relative">
+                    <h3 className="text-2xl font-serif text-[#4A443B] mb-4">happy birthday ♡</h3>
+                    <p className="text-[#8C8476] mb-8 text-sm md:text-base leading-relaxed">
+                    thank you for being you — for the patience, the late-night talks, the silly inside jokes. I hope today feels as gentle and special as you've always made my days feel.
+                    </p>
+                    <button 
+                    onClick={() => setIsOpen(true)}
+                    className="px-8 py-3.5 bg-[#F5EBE4] text-[#4A443B] rounded-full text-[10px] font-bold tracking-[0.2em] uppercase hover:bg-[#EAE0D8] transition-colors shadow-sm"
+                    >
+                    Read my letter
+                    </button>
+                </div>
+
+                <AnimatePresence>
+                    {isOpen && (
+                    <motion.div
+                        initial={{ opacity: 0, y: "100%" }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: "100%" }}
+                        transition={{ type: "spring", damping: 25, stiffness: 200 }}
+                        className="fixed inset-0 z-50 bg-[#FDF8F5] overflow-y-auto"
+                    >
+                        <div className="min-h-screen py-8 px-6 md:py-16 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMiIgY3k9IjIiIHI9IjEiIGZpbGw9IiNFOEQ1QzQiIGZpbGwtb3BhY2l0eT0iMC40Ii8+PC9zdmc+')]">
+                        <div className="max-w-2xl mx-auto bg-white/80 backdrop-blur-md p-8 md:p-16 rounded-3xl shadow-sm border border-[#E8D5C4]/50">
+                            <button 
+                            onClick={() => setIsOpen(false)}
+                            className="mb-12 text-[#8C8476] hover:text-[#4A443B] transition-colors flex items-center gap-2 text-[10px] font-bold tracking-[0.2em] uppercase bg-[#FDF8F5] px-4 py-2 rounded-full w-fit"
+                            >
+                            <X className="w-4 h-4" /> Close Letter
+                            </button>
+                            
+                            <div className="text-center mb-16">
+                            <div className="inline-flex items-center gap-2 mb-6">
+                                <Heart className="w-3 h-3 text-[#E8B4B8] fill-current" />
+                                <p className="text-[10px] font-bold tracking-[0.2em] text-[#C8A98E] uppercase">A letter, just for you</p>
+                                <Heart className="w-3 h-3 text-[#E8B4B8] fill-current" />
+                            </div>
+                            <h2 className="text-4xl md:text-5xl font-serif text-[#4A443B] italic">My Love,</h2>
+                            </div>
+
+                            <div className="prose prose-lg font-serif text-[#5A5245] leading-loose mx-auto space-y-6 md:px-8">
+                            <p>
+                                Many many happy returns of the day. Aj mera banda 25 ka hogya ab to uncle ban gy ap. Now I can call you uncle.
+                            </p>
+                            <p>
+                                No matter what life brings us, whether the days are full of happiness or difficult moments, I want you to know one thing — I will always be here for you.
+                            </p>
+                            <p>
+                                Through the good times and the hard times, through every smile and every challenge, I want to stand beside you. Thank you for being such an important part of my life and for giving me so many beautiful memories.
+                            </p>
+                            <p>
+                                And when you feel like no one is there for you, I want you to remember that I will be.
+                            </p>
+                            <p>
+                                In your quiet moments, in difficult days, in times when things don't make sense and you feel alone — I'll stand beside you. You don't have to go through everything by yourself.
+                            </p>
+                            <p>
+                                No matter how life changes, I'll always be someone you can talk to, lean on, and count on.
+                            </p>
+                            <p>
+                                When the world feels distant, I'll still be here for you ❤️
+                            </p>
+                            <p>
+                                Again Happy birthday to you ❤️. I love you so much and I will always love you. I know always sounds filmy but I promise I will.
+                            </p>
+
+                            <div className="pt-16 pb-8 flex flex-col items-center justify-center text-[#C8A98E]">
+                                <div className="w-16 h-px bg-[#E8D5C4] mb-8" />
+                                <p className="text-2xl italic mb-3 font-serif text-[#4A443B]">Forever yours Esha,</p>
+                                <Heart className="w-5 h-5 text-[#E8B4B8] fill-current" />
+                            </div>
+                            </div>
+                        </div>
+                        </div>
+                    </motion.div>
+                    )}
+                </AnimatePresence>
+                </div>
+            );
+        }
+
+        function MainContent() {
+            const albumRef = useRef(null);
+
+            return (
+                <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 1, delay: 0.5 }}
+                className="max-w-2xl mx-auto px-6 py-16 md:py-24 space-y-32"
+                >
+                <HeroSection onSeeAlbum={() => albumRef.current?.scrollIntoView({ behavior: 'smooth' })} />
+                <div ref={albumRef}>
+                    <AlbumSection />
+                </div>
+                <BouquetSection />
+                <LetterSection />
+                
+                {/* Background Romantic Music */}
+                <audio autoPlay loop muted={false}>
+                    <source src="https://cdn.pixabay.com/audio/2022/05/27/audio_1808fbf07a.mp3" type="audio/mpeg" />
+                </audio>
+                </motion.div>
+            );
+        }
+
+        function App() {
+            const [isOpened, setIsOpened] = useState(false);
+
+            return (
+                <div className="min-h-screen bg-[#FDF8F5] text-[#5A5245] font-sans selection:bg-[#F4E1D2] selection:text-[#5A5245]">
+                <AnimatePresence mode="wait">
+                    {!isOpened ? (
+                    <EnvelopeScreen onOpen={() => setIsOpened(true)} key="envelope" />
+                    ) : (
+                    <MainContent key="main" />
+                    )}
+                </AnimatePresence>
+                </div>
+            );
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
